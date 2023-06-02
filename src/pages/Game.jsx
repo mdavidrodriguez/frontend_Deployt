@@ -6,7 +6,9 @@ import { useNavigate } from "react-router-dom";
 import { Container, Nav, Navbar } from "react-bootstrap";
 
 export default function Game() {
-  const [history, setHistory] = useState([{ squares: Array(9).fill(null), coordinates: { row: null, col: null } }]);
+  const [history, setHistory] = useState([
+    { squares: Array(9).fill(null), coordinates: { row: null, col: null } },
+  ]);
   const [currentMove, setCurrentMove] = useState(0);
   const [orden, setOrden] = useState("ascendente");
   const [winners, setWinners] = useState([]);
@@ -21,12 +23,19 @@ export default function Game() {
       navigate("/login");
     } else {
       const getWinners = async () => {
-        const response = await axios.get("http://localhost:3000/api/v1/winners", {
-          headers: {
-            Authorization: `Bearer ${t}`,
-          },
-        });
-        setWinners(response.data.data);
+        try {
+          const response = await axios.get(
+            "https://frontend-exvk.onrender.com/api/v1/winners",
+            {
+              headers: {
+                Authorization: `Bearer ${t}`,
+              },
+            }
+          );
+          setWinners(response.data.data);
+        } catch (error) {
+          console.log(error);
+        }
       };
       getWinners();
     }
@@ -38,11 +47,15 @@ export default function Game() {
     };
     try {
       const t = localStorage.getItem("jwt-token");
-      const current_winner = await axios.post("http://localhost:3000/api/v1/winners", winner, {
-        headers: {
-          Authorization: `Bearer ${t}`,
-        },
-      });
+      const current_winner = await axios.post(
+        "https://frontend-exvk.onrender.com/api/v1/winners",
+        winner,
+        {
+          headers: {
+            Authorization: `Bearer ${t}`,
+          },
+        }
+      );
       setWinners([...winners, current_winner.data.data]);
     } catch (error) {
       console.log(error);
@@ -107,10 +120,19 @@ export default function Game() {
       </Navbar>
       <div className="game pt-5">
         <div className="game-board">
-          <Board xIsNext={xIsNext} squares={currentSquares} onPlay={handlePlay} onWinner={handleWinner} />
+          <Board
+            xIsNext={xIsNext}
+            squares={currentSquares}
+            onPlay={handlePlay}
+            onWinner={handleWinner}
+          />
         </div>
         <div className="game-info">
-          <button onClick={handleSortMoves}>{orden === "ascendente" ? "Ordenar Descendentemente" : "Ordenar Ascendentemente"}</button>
+          <button onClick={handleSortMoves}>
+            {orden === "ascendente"
+              ? "Ordenar Descendentemente"
+              : "Ordenar Ascendentemente"}
+          </button>
           <ol>{moves}</ol>
         </div>
         <div className="game-info">
