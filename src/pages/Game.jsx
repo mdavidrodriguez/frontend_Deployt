@@ -25,7 +25,7 @@ export default function Game() {
       const getWinners = async () => {
         try {
           const response = await axios.get(
-            "https://frontend-exvk.onrender.com/api/v1/winners",
+            "https://pruebaservice.onrender.com/api/v1/winners",
             {
               headers: {
                 Authorization: `Bearer ${t}`,
@@ -48,7 +48,7 @@ export default function Game() {
     try {
       const t = localStorage.getItem("jwt-token");
       const current_winner = await axios.post(
-        "https://frontend-exvk.onrender.com/api/v1/winners",
+        "https://pruebaservice.onrender.com/api/v1/winners",
         winner,
         {
           headers: {

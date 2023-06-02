@@ -24,7 +24,7 @@ export default function SignUp() {
     e.preventDefault();
     let user = { username, password, email, role };
     try {
-      const created_user = await axios.post("https://frontend-exvk.onrender.com/api/v1/auth/signup", user);
+      const created_user = await axios.post("https://pruebaservice.onrender.com/api/v1/auth/signup", user);
       if (created_user) {
         toast.success("Usuario registrado!", {
           position: "top-right",
